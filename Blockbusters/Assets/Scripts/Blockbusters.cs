@@ -48,6 +48,9 @@ public class Blockbusters : MonoBehaviour {
     public float width;
     public float height;
 
+    private Transform selectedCell;
+
+
     string MakeAcronym(string input) {
         var chars = input.Where(Char.IsUpper).ToArray();
         return new String(chars);
@@ -99,10 +102,32 @@ public class Blockbusters : MonoBehaviour {
     {
         Debug.Log("You clicked on " + t.name);
 
-        //Flash(t);
+        if(selectedCell == null)
+        {
+            Flash(t);
+            selectedCell = t;
+        }
+        else if(selectedCell == t)
+        {
+            StopCoroutine(cr);
+            t.GetChild(0).gameObject.SetActive(false);
+            t.GetComponent<UIPolygon>().color = solvedColour;
+            selectedCell.GetComponent<CanvasGroup>().alpha = 1;
+            selectedCell = null;
+        }
+        else
+        {
+            StopCoroutine(cr);
+            selectedCell.GetComponent<CanvasGroup>().alpha = 0;
+            selectedCell = t;
+            t.GetChild(0).gameObject.SetActive(true);
+            t.GetComponent<UIPolygon>().color = new Color32(71,229,96,255);
+            t.GetComponent<CanvasGroup>().alpha = 1;
+            Flash(t);
+        }
 
-        Destroy(t.GetChild(0).gameObject);
-        t.GetComponent<UIPolygon>().color = solvedColour;
+
+
     }
 
     Coroutine cr;
