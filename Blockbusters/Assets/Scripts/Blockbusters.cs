@@ -8,6 +8,38 @@ using System;
 
 public class Blockbusters : MonoBehaviour {
 
+    private enum GameState { StartScreen, Playing, Ended };
+    GameState gameState = GameState.StartScreen;
+
+    [SerializeField]
+    private Text timerText;
+    private float timeRemaining = 60f;
+
+
+    /*What is the subtitle of the second South Park game, sequel to The Stick of Truth?
+TFBW
+South Park : The Fractured But Whole
+
+
+In Ocarina of Time, what item can be found in the Spirit Temple?
+Mirror Shield
+
+Lavos is the final boss from which game?
+Chrono Trigger
+
+In what fictional city did Resident Evil 1,2 and 3 take place?
+Raccoon City
+
+Who is the main character of the Half Life series?
+Gordon Freeman
+
+TDBM In Overwatch, what does the character Genji say when using their ultimate? The Dragon Becomes Me
+
+GF What is the adventure game set in the Land of the Dead, published by LucasArts in 1998 Grim Fandango
+
+AT What is the subtitle of the Uncharted 2?
+Among Thieves*/
+
     // Define the set of 20 answers that will be arranged on the 5x4 grid
     // Each hex cell will contain a clue formed from those letters in CAPITALS
     // in the list below
@@ -50,6 +82,16 @@ public class Blockbusters : MonoBehaviour {
 
     private Transform selectedCell;
 
+    [Header("Audio")]
+    [SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip successMusic;
+    [SerializeField]
+    private AudioClip inGameMusic;
+    [SerializeField]
+    private AudioClip failureMusic;
+
 
     string MakeAcronym(string input) {
         var chars = input.Where(Char.IsUpper).ToArray();
@@ -87,28 +129,65 @@ public class Blockbusters : MonoBehaviour {
             temp.transform.SetParent(canvas, false);
             temp.transform.SetAsFirstSibling();
             temp.GetComponent<RectTransform>().localPosition = Offset + new Vector2(5 * width, h * height - height / 2f);
+            temp.GetComponent<Button>().onClick.AddListener(
+                    () => { OnSuccess(); }
+                );
         }
         
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+		if(gameState == GameState.Playing) {
+            timeRemaining -= Time.deltaTime;
+        }
+        if(timeRemaining <0 ) {
+            timeRemaining = 0;
+            OnFailure();
+        }
+        timerText.text = timeRemaining.ToString("F0"); 
 
+    }
+
+
+    public void OnStartGame()
+    {
+        gameState = GameState.Playing;
+        audioSource.clip = inGameMusic;
+        audioSource.Play();
+    }
+
+    public void OnSuccess()
+    {
+        gameState = GameState.Ended;
+        audioSource.clip = successMusic;
+        audioSource.Play();
+    }
+
+    public void OnFailure()
+    {
+        gameState = GameState.Ended;
+        audioSource.clip = failureMusic;
+        audioSource.Play();
+    }
 
 
     public void OnClick(Transform t)
     {
         Debug.Log("You clicked on " + t.name);
 
-        if(selectedCell == null)
-        {
+        // Clicking on a new cell
+        if(selectedCell == null) {
+
+            if(gameState == GameState.StartScreen)
+            {
+                OnStartGame();
+            }
+
             Flash(t);
             selectedCell = t;
         }
-        else if(selectedCell == t)
-        {
+        else if(selectedCell == t) {
             StopCoroutine(cr);
             t.GetChild(0).gameObject.SetActive(false);
             t.GetComponent<UIPolygon>().color = solvedColour;
