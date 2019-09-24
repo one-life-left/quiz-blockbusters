@@ -15,91 +15,38 @@ public class Blockbusters : MonoBehaviour {
     private Text timerText;
     private float timeRemaining = 60f;
 
-
-    /*What is the subtitle of the second South Park game, sequel to The Stick of Truth?
-TFBW
-South Park : The Fractured But Whole
-
-In Ocarina of Time, what item can be found in the Spirit Temple?
-Mirror Shield
-
-Lavos is the final boss from which game?
-Chrono Trigger
-
-In what fictional city did Resident Evil 1,2 and 3 take place?
-Raccoon City
-
-Who is the main character of the Half Life series?
-Gordon Freeman
-
-         Nintendo DS Rhythm Action game released in 2007
-         Elite Beat Agents
-
-        GOH In Mortal Kombat, what does Scorpion say when he throws his spear?
-        Get Over Here
-
-        Crash Bandicoot
-
-        Angry Birds
-
-        The Shadow and the Flame, The Sands of Time, and The Warrior Within are games in which series?
-        Prince of Persia
-
-        Mario Party
-
-        Cooking Mama
-
-        No More Heroes
-
-        Heavy Rain
-
-        Crazy Taxi
-
-        Who was lead architect of PlayStation 4 and PlayStation Vita 
-        Mark Cerny
-
-        What was the first game released by Mark Cerny, 
-        Marble Madness
-
-        Killer Instinct
-
-        Metal Slug
-
-
-
-TDBM In Overwatch, what does the character Genji say when using their ultimate? The Dragon Becomes Me
-
-GF What is the adventure game set in the Land of the Dead, published by LucasArts in 1998 Grim Fandango
-
-AT What is the subtitle of the Uncharted 2?
-Among Thieves*/
+    [SerializeField]
+    private Text questionText;
 
     // Define the set of 20 answers that will be arranged on the 5x4 grid
     // Each hex cell will contain a clue formed from those letters in CAPITALS
     // in the list below
-    private string[] answers = {
-        "Sonic The Hedgehog",
-        "Duke Nukem",
-        "Shadow of the Colossus",
-        "Mario",
-        "Will White",
-        "Nintendo",
-        "California Games",
-        "Super Mario Odyssey",
-        "The Legend Of Zelda",
-        "Super Monkey Ball",
-        "Bulbasaur",
-        "New Zealand",
-        "Pikachu",
-        "Samus Aran",
-        "Sega Dreamcast",
-        "Sega Nomad",
-        "Duck Hunt",
-        "Wild Gunman",
-        "Lemmings",
-        "James Pond"
+    private string[,] question_and_answers =
+    {
+        { "What is the subtitle of the second South Park game, sequel to The Stick of Truth?", "The Fractured But Whole" },
+        { "In Ocarina of Time, what item can be found in the Spirit Temple?", "Mirror Shield" },
+        { "Lavos is the final boss from which game?", "Chrono Trigger" },
+        { "In what fictional city did Resident Evil 1,2 and 3 take place?", "Raccoon City" },
+        { "Who is the main character of the Half Life series?", "Gordon Freeman" },
+        { "Nintendo DS Rhythm Action game released in 2007?", "Elite Beat Agents" },
+        { "In Mortal Kombat, what does Scorpion say when he throws his spear?", "Get Over Here" },
+        { "The Shadow and the Flame, The Sands of Time, and The Warrior Within are games in which series?", "Prince of Persia" },
+        { "Who was lead architect of PlayStation 4 and PlayStation Vita?", "Mark Cerny" },
+        { "In Overwatch, what does the character Genji say when using their ultimate?",  "The Dragon Becomes Me"},
+        { "What is the 1998 LucasArts adventure game set in the Land of the Dead?", "Grim Fandango" },
+        { "What is the subtitle of the Uncharted 2?", "Among Thieves" },
+        { "", "Crash Bandicoot"},
+        { "","Angry Birds"},
+        { "","Mario Party"},
+        { "","Cooking Mama"},
+        { "","No More Heroes"},
+        { "","Heavy Rain"},
+        { "","Crazy Taxi"},
+        { "","Killer Instinct"},
     };
-
+/*
+        Metal Slug
+*/
 
     private float flashSpeed = 2.0f;
 
@@ -143,7 +90,8 @@ Among Thieves*/
                 GameObject temp = Instantiate(hexCell, new Vector3(h * height, w * width, 0), Quaternion.identity) as GameObject;
                 temp.transform.SetParent(canvas, false);
                 temp.transform.SetAsFirstSibling();
-                temp.transform.GetComponentInChildren<Text>().text = MakeAcronym(answers[h*5 + w]);
+                temp.transform.GetComponentInChildren<Text>().text = MakeAcronym(question_and_answers[h*5 + w,1]);
+                temp.transform.GetComponentInChildren<HexCell>().id = h * 5 + w;
                 temp.GetComponent<Button>().onClick.AddListener(
                     () => { OnClick(temp.transform); }
                 );
@@ -220,14 +168,21 @@ Among Thieves*/
 
             Flash(t);
             selectedCell = t;
+
+            questionText.text = question_and_answers[t.GetComponent<HexCell>().id, 0];
+
         }
+        // We've clicked on the same cell as was already flashing = Correct!
         else if(selectedCell == t) {
             StopCoroutine(cr);
             t.GetChild(0).gameObject.SetActive(false);
             t.GetComponent<UIPolygon>().color = solvedColour;
             selectedCell.GetComponent<CanvasGroup>().alpha = 1;
             selectedCell = null;
+
+            questionText.text = "";
         }
+        // We've clicked on a cell without solving the previous one
         else
         {
             StopCoroutine(cr);
@@ -237,6 +192,8 @@ Among Thieves*/
             t.GetComponent<UIPolygon>().color = new Color32(71,229,96,255);
             t.GetComponent<CanvasGroup>().alpha = 1;
             Flash(t);
+
+            questionText.text = question_and_answers[t.GetComponent<HexCell>().id, 0];
         }
 
 
