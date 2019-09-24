@@ -20,7 +20,6 @@ public class Blockbusters : MonoBehaviour {
 TFBW
 South Park : The Fractured But Whole
 
-
 In Ocarina of Time, what item can be found in the Spirit Temple?
 Mirror Shield
 
@@ -32,6 +31,41 @@ Raccoon City
 
 Who is the main character of the Half Life series?
 Gordon Freeman
+
+         Nintendo DS Rhythm Action game released in 2007
+         Elite Beat Agents
+
+        GOH In Mortal Kombat, what does Scorpion say when he throws his spear?
+        Get Over Here
+
+        Crash Bandicoot
+
+        Angry Birds
+
+        The Shadow and the Flame, The Sands of Time, and The Warrior Within are games in which series?
+        Prince of Persia
+
+        Mario Party
+
+        Cooking Mama
+
+        No More Heroes
+
+        Heavy Rain
+
+        Crazy Taxi
+
+        Who was lead architect of PlayStation 4 and PlayStation Vita 
+        Mark Cerny
+
+        What was the first game released by Mark Cerny, 
+        Marble Madness
+
+        Killer Instinct
+
+        Metal Slug
+
+
 
 TDBM In Overwatch, what does the character Genji say when using their ultimate? The Dragon Becomes Me
 
