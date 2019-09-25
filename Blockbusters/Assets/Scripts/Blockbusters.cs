@@ -35,13 +35,13 @@ public class Blockbusters : MonoBehaviour {
         { "In Overwatch, what does the character Genji say when using their ultimate?",  "The Dragon Becomes Me"},
         { "What is the 1998 LucasArts adventure game set in the Land of the Dead?", "Grim Fandango" },
         { "What is the subtitle of the Uncharted 2?", "Among Thieves" },
-        { "", "Crash Bandicoot"},
-        { "","Angry Birds"},
+        { "Dr Neo Cortex is the main antagonist in which game series?", "Crash Bandicoot"},
+        { "Red, Chuck, Bomb, and Matilda are characters in which game?","Angry Birds"},
         { "","Mario Party"},
         { "","Cooking Mama"},
-        { "","No More Heroes"},
-        { "","Heavy Rain"},
-        { "","Crazy Taxi"},
+        { "Which Wii action-adventure game shares its name withan album by The Stranglers?","No More Heroes"},
+        { "In what game do you pursue a serial murderer called the Origami Killer","Heavy Rain"},
+        { "What is the Sega CD FMV game in which you watch over a house of teenage girls?","Night Trap"},
         { "","Killer Instinct"},
     };
 /*
